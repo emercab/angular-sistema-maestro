@@ -1,0 +1,109 @@
+<section class="calculator">
+
+  <div class="calculator__container container">
+
+    <div class="calculator__info">
+
+      <h1 class="text-first-color">{{ title }}</h1>
+      <h2 class="text-second-color">{{ subtitle }}</h2>
+      <hr>
+
+      <p>
+        {{ description1 }} {{ table1 }} o {{ table2 }}. <br>
+        La <strong>{{ table1 }}</strong> {{ description2 }} <br>
+        La <strong>{{ table2 }}</strong> {{ description3 }} <br>
+      </p>
+    </div>
+
+    <div class="calculator__form">
+
+      <form [formGroup]="myForm" autocomplete="off">
+
+        <div class="form-item">
+          <label for="selTable">Tipo de tabla:</label>
+          <select formControlName="tableType" (change)="onSelectTable()" #selTable class="w-80">
+            @for (option of tableOptions; track $index) {
+              <option value="{{ option.value }}">{{ option.option }}</option>
+            }
+          </select>
+        </div>
+
+        @if (selectedTableVal == '1') {
+          <div class="form-item">
+            <label for="selEfm">Educación formal mínima:</label>
+            <select formControlName="efmControl" (change)="onSelectEfm()" #selEfm class="w-100">
+              @for (option of efmOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-item">
+            <label for="selSaberPro">Saber Pro y Saber TyT:</label>
+            <select formControlName="saberProControl" (change)="onSelectSaberPro()" #selSaberPro class="w-100">
+              @for (option of saberProOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+        }
+
+        <div class="form-item">
+
+          <label for="ubicacion">Ubicación de la Sede:</label>
+
+          <select name="ubicacion" id="ubicacion" class="w-100">
+            <option value="15">Difícil acceso</option>
+            <option value="14">Rural</option>
+            <option value="13">Urbana en municipio no certificado</option>
+            <option value="12">Urbana en municipio certificado</option>
+          </select>
+
+        </div>
+
+        <div class="form-item">
+
+          <label for="movimientos">Movimientos en el Escalafón:</label>
+
+          <select name="movimientos" id="movimientos" class="w-50">
+            <option value="15">Ninguno (0)</option>
+            <option value="13">Uno(1)</option>
+            <option value="11">Dos (2)</option>
+            <option value="9">Tres (3)</option>
+            <option value="7">Cuatro (4)</option>
+          </select>
+
+        </div>
+
+        <div class="form-item">
+
+          <label for="autoevaluacion">Autoevaluación:</label>
+
+          <input type="number" name="autoevaluacion" id="autoevaluacion" value="70" min="0" max="100" class="w-50">
+
+          <!-- Alert si error -->
+          <div class="alert alert-danger no-display w-70" id="alertFailValidation"></div>
+
+        </div>
+
+        <div class="form-item">
+
+          <button type="button" id="calcular" class="btn">Calcular</button>
+          <button type="button" id="borrar" class="btn bg-danger">Borrar</button>
+
+        </div>
+
+        <div class="form-item">
+
+          <h3 class="text-second-color">Prueba Pedagógica:</h3>
+          <div id="resultados"></div>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>

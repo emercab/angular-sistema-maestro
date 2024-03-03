@@ -1,0 +1,101 @@
+
+:root {
+  --section-color3: #e4edf5;
+  --table-color: #fff;
+}
+
+.text-lighten-color { color: var(--text-lighten-color) }
+.bg-danger { background-color: var(--danger-color); }
+
+body.dark-theme {
+  --section-color3: #2e495d;
+  --table-color: #151c22;
+  --text-lighten-color: hsl(var(--hue), 15%, 16%);
+}
+
+.calculator {
+  width: 100%;
+  padding: 4rem 0;
+  background-color: var(--section-color3);
+  text-align: center;
+}
+
+.calculator hr {
+  margin: 2rem auto;
+  width: 90%;
+  max-width: 700px;
+  border: 1px solid var(--first-color);
+}
+
+.calculator__container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.calculator__info {
+  width: 90%;
+}
+
+.calculator__info h1 {
+  margin-bottom: 1rem;
+}
+
+.calculator__info p {
+  margin-bottom: 2rem;
+}
+
+.calculator__form {
+  width: 90%;
+  max-width: 500px;
+}
+
+.calculator__form textarea, .calculator__form select, .calculator__form input {
+  max-width: 400px;
+  padding: .5rem 1rem;
+  border: 2px solid var(--first-color);
+  border-radius: .6rem;
+  background-color:var(--body-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+  transition: .5s;
+  outline: none;
+  text-align: center;
+}
+.calculator__form input, .calculator__form select { height: 5rem }
+.calculator__form select, .calculator__form label { display: block; }
+.calculator__form label {
+  font-weight: bold;
+}
+.calculator__form select {
+  margin: 0 auto;
+}
+
+.calculator__form table {
+  max-width: 400px;
+  margin: 1rem auto;
+  table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid var(--first-color);
+}
+
+.calculator__form table td {
+  padding: 1rem;
+  background-color: var(--table-color);
+  color: var(--text-color);
+  border: 1px solid var(--first-color);
+}
+
+.calculator__form table .left {
+  text-align: left;
+  background-color: var(--section-color);
+  color: var(--text-color);
+  font-weight: bold;
+}
+
+.calculator__form .alert {
+  margin: 1rem auto 0;
+}
