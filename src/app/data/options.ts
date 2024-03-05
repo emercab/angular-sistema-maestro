@@ -25,7 +25,7 @@ export const exp: SelectOptions[] = [
   { value: '7',   option: 'Municipio donde se oferta la vacante' },
   { value: '5',   option: 'Departamento donde se oferta la vacante' },
   { value: '3',   option: 'Experiencia en otras zonas' },
-  { value: '0',   option: 'No disponible' },
+  { value: '0',   option: 'Sin experiencia' },
 ]
 
 export const vinculo: SelectOptions[] = [
