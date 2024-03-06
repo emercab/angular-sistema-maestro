@@ -12,7 +12,7 @@ export const efm: SelectOptions[] = [
   { value: '5',   option: 'Profesional no licenciado' },
 ]
 
-export const saberPro: SelectOptions[] = [
+export const saberPro1: SelectOptions[] = [
   { value: '',    option: 'Seleccione...' },
   { value: '10',  option: 'Quintil 5 o percentil 81-100' },
   { value: '8',   option: 'Quintil 4 o percentil 61-80' },
@@ -20,11 +20,19 @@ export const saberPro: SelectOptions[] = [
   { value: '0',   option: 'No disponible' },
 ]
 
+export const saberPro2: SelectOptions[] = [
+  { value: '',    option: 'Seleccione...' },
+  { value: '15',  option: 'Quintil 5 o percentil 81-100' },
+  { value: '10',  option: 'Quintil 4 o percentil 61-80' },
+  { value: '8',   option: 'Quintil 3 o percentil 41-60' },
+  { value: '0',   option: 'No disponible' },
+]
+
 export const exp: SelectOptions[] = [
   { value: '',    option: 'Seleccione...' },
   { value: '7',   option: 'Municipio donde se oferta la vacante' },
   { value: '5',   option: 'Departamento donde se oferta la vacante' },
-  { value: '3',   option: 'Experiencia en otras zonas' },
+  { value: '3',   option: 'Otra zona de Colombia' },
   { value: '0',   option: 'Sin experiencia' },
 ]
 

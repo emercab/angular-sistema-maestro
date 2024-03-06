@@ -51,6 +51,10 @@ body.dark-theme {
   max-width: 500px;
 }
 
+.calculator__form .form-item {
+  margin-bottom: 1.2rem;
+}
+
 .calculator__form textarea, .calculator__form select, .calculator__form input {
   max-width: 400px;
   padding: .5rem 1rem;

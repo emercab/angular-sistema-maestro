@@ -14,11 +14,12 @@
         La <strong>{{ table2 }}</strong> {{ description3 }} <br>
       </p>
     </div>
-
+    
     <div class="calculator__form">
-
+      
       <form [formGroup]="myForm" autocomplete="off">
-
+        
+        <!-- Tipo de tabla -->
         <div class="form-item">
           <label for="selTable">Tipo de tabla:</label>
           <select formControlName="tableType" (change)="onSelectTable()" #selTable class="w-80">
@@ -29,6 +30,7 @@
         </div>
 
         @if (selectedTableVal == '1') {
+          <!-- Educación formal mínima -->
           <div class="form-item">
             <label for="selEfm">Educación formal mínima:</label>
             <select formControlName="efmControl" (change)="onSelectEfm()" #selEfm class="w-100">
@@ -38,59 +40,73 @@
             </select>
           </div>
 
+          <!-- Saber Pro y Saber TyT -->
           <div class="form-item">
-            <label for="selSaberPro">Saber Pro y Saber TyT:</label>
-            <select formControlName="saberProControl" (change)="onSelectSaberPro()" #selSaberPro class="w-100">
-              @for (option of saberProOptions; track $index) {
+            <label for="selSaberPro1">Saber Pro y Saber TyT:</label>
+            <select formControlName="saberProControl" (change)="onSelectSaberPro1()" #selSaberPro1 class="w-100">
+              @for (option of saberProOptions1; track $index) {
                 <option value="{{ option.value }}">{{ option.option }}</option>
               }
             </select>
           </div>
 
+          <!-- Experiencia docente -->
           <div class="form-item">
             <label for="selExp" style="display: block; margin-bottom: 8px;">Experiencia Docente:</label>
+            <p>Ingrese su experiencia docente en niveles inicial, preescolar, basica y media. Indique tiempo y ubicación, luego haga clic en el botón "Agregar". Puede agregar varias.</p>
 
-            <!-- Tiempo de experiencia docente: -->
-            <label for="tiempo">Tiempo:</label>
-            
-            <div class="form-item w-60 flex" style="column-gap: 10px; margin: 0 auto;">
-              <input type="number" name="autoevaluacion" id="tiempo" min="0" class="w-40">
-              
-              <select class="w-50">
-                <option value="a">Años</option>
-                <option value="m">Meses</option>
-              </select>
-            </div>
-
-            <!-- Tiempo de experiencia docente: -->
+            <!-- Zona de la experiencia docente: -->
             <label for="tiempo">Zona de la experiencia:</label>
             <select formControlName="expControl" (change)="onSelectExp()" #selExp class="w-100">
               @for (option of expOptions; track $index) {
                 <option value="{{ option.value }}">{{ option.option }}</option>
               }
             </select>
+            <br>
+            
+            <!-- Tiempo de experiencia docente: -->
+            <label for="tiempo">Tiempo en años:</label>
+            <input type="number" #inpTime id="tiempo" min="0" class="w-40" style="display: block; margin: auto;">
+
+            <button type="button" class="btn bg-success" (click)="addExperience()">
+              Agregar
+            </button>
+
+            <ul id="expList"></ul>
           </div>
+
+          <!-- Experiencia Docente en cualquier nivel -->
+          <div class="form-item">
+            <label for="selExp" style="display: block; margin-bottom: 8px;">Experiencia Docente en otro nivel:</label>
+            <label for="tiempo2">Tiempo en años:</label>
+            <input type="number" formControlName="expCualqControl" #inpTimeExpCualq id="tiempo2" min="0" class="w-40" style="margin-bottom: 10px;">
+          </div>
+
+          <!-- Vínculo en la zona donde se oferta la vacante -->
+          <div class="form-item">
+            <label for="selVinculo">Vínculo en la zona de la vacante:</label>
+            <select formControlName="vinculoControl" (change)="onSelectVinculo()" #selVinculo class="w-100">
+              @for (option of vinculoOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Educación Formal Adicional -->
+          <div class="form-item">
+            <label for="selEfa">Educación Formal Adicional:</label>
+            <select formControlName="efaControl" (change)="onSelectEfa()" #selEfa class="w-100">
+              @for (option of efaOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
         }
 
         <div class="form-item">
-
-          <!-- Alert si error -->
-          <div class="alert alert-danger no-display w-70" id="alertFailValidation"></div>
-
-        </div>
-
-        <div class="form-item">
-
           <button type="button" id="calcular" class="btn">Calcular</button>
           <button type="button" id="borrar" class="btn bg-danger">Borrar</button>
-
-        </div>
-
-        <div class="form-item">
-
-          <h3 class="text-second-color">Prueba Pedagógica:</h3>
-          <div id="resultados"></div>
-
         </div>
 
       </form>
