@@ -44,7 +44,7 @@ export const vinculo: SelectOptions[] = [
   { value: '9',   option: 'Por departamento - Nacimiento' },
   { value: '7',   option: 'Por departamento - Educación' },
   { value: '5',   option: 'Por departamento - Residencia' },
-  { value: '0',   option: 'No disponible' },
+  { value: '0',   option: 'No tiene vínculo' },
 ]
 
 export const efa: SelectOptions[] = [

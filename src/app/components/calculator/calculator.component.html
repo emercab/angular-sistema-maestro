@@ -43,7 +43,7 @@
           <!-- Saber Pro y Saber TyT -->
           <div class="form-item">
             <label for="selSaberPro1">Saber Pro y Saber TyT:</label>
-            <select formControlName="saberProControl" (change)="onSelectSaberPro1()" #selSaberPro1 class="w-100">
+            <select formControlName="saberProControl1" (change)="onSelectSaberPro1()" #selSaberPro1 class="w-100">
               @for (option of saberProOptions1; track $index) {
                 <option value="{{ option.value }}">{{ option.option }}</option>
               }
@@ -103,10 +103,80 @@
           </div>
 
         }
+        @else if (selectedTableVal == '2') {
+          <!-- Título Orientado a la Docencia -->
+          <div class="form-item">
+            <label for="selTod">Título Orientado a la Docencia:</label>
+            <select formControlName="todControl" (change)="onSelectTod()" #selTod class="w-100">
+              @for (option of todOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Saber Pro y Saber TyT -->
+          <div class="form-item">
+            <label for="selSaberPro2">Saber Pro y Saber TyT:</label>
+            <select formControlName="saberProControl2" (change)="onSelectSaberPro2()" #selSaberPro2 class="w-100">
+              @for (option of saberProOptions2; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Educación Formal Adicional -->
+          <div class="form-item">
+            <label for="selEfa">Educación Formal Adicional:</label>
+            <select formControlName="efaControl" (change)="onSelectEfa()" #selEfa class="w-100">
+              @for (option of efaOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Educación para el Trabajo y Desarrollo Humano -->
+          <div class="form-item">
+            <label for="selEtdh">Educación para el Trabajo y Desarrollo Humano:</label>
+            <select formControlName="etdhControl" (change)="onSelectEtdh()" #selEtdh class="w-100">
+              @for (option of etdhOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Educación informal -->
+          <div class="form-item">
+            <label for="selEi">Educación Informal:</label>
+            <select formControlName="eiControl" (change)="onSelectEi()" #selEi class="w-100">
+              @for (option of eiOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+
+          <!-- Vínculo en la zona donde se oferta la vacante -->
+          <div class="form-item">
+            <label for="selVinculo">Vínculo en la zona de la vacante:</label>
+            <select formControlName="vinculoControl" (change)="onSelectVinculo()" #selVinculo class="w-100">
+              @for (option of vinculoOptions; track $index) {
+                <option value="{{ option.value }}">{{ option.option }}</option>
+              }
+            </select>
+          </div>
+        }
 
         <div class="form-item">
-          <button type="button" id="calcular" class="btn">Calcular</button>
-          <button type="button" id="borrar" class="btn bg-danger">Borrar</button>
+          <button type="button" id="calcular" class="btn" style="margin-right: 8px;" (click)="calcularPuntaje()">
+            Calcular
+          </button>
+          
+          <button type="button" id="borrar" class="btn bg-danger" (click)="resetForm()">
+            Borrar
+          </button>
+        </div>
+
+        <div class="form-item">
+          <div id="resultados"></div>
         </div>
 
       </form>

@@ -1,36 +1,38 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { SelectOptions } from '../../interfaces/select-options.interface';
 
 import * as options from '../../data/options';
+import { showResults } from '../../helpers/show-results';
 
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.css',
 })
-export class CalculatorComponent {
+export class CalculatorComponent implements OnInit {
 
   // Atributos de formularios
-  @ViewChild('selTable')        public selectTable!: ElementRef<HTMLSelectElement>
-  @ViewChild('selEfm')          public selectEfm!: ElementRef<HTMLSelectElement>
-  @ViewChild('selSaberPro1')    public selectSaberPro1!: ElementRef<HTMLSelectElement>
-  @ViewChild('selSaberPro2')    public selectSaberPro2!: ElementRef<HTMLSelectElement>
-  @ViewChild('selExp')          public selectExp!: ElementRef<HTMLSelectElement>
-  @ViewChild('inpTime')         public inputTime!: ElementRef<HTMLInputElement>
+  @ViewChild('selTable') public selectTable!: ElementRef<HTMLSelectElement>
+  @ViewChild('selEfm') public selectEfm!: ElementRef<HTMLSelectElement>
+  @ViewChild('selSaberPro1') public selectSaberPro1!: ElementRef<HTMLSelectElement>
+  @ViewChild('selSaberPro2') public selectSaberPro2!: ElementRef<HTMLSelectElement>
+  @ViewChild('selExp') public selectExp!: ElementRef<HTMLSelectElement>
+  @ViewChild('inpTime') public inputTime!: ElementRef<HTMLInputElement>
   @ViewChild('inpTimeExpCualq') public inputTimeExpCualq!: ElementRef<HTMLInputElement>
-  @ViewChild('selVinculo')      public selectVinculo!: ElementRef<HTMLSelectElement>
-  @ViewChild('selEfa')          public selectEfa!: ElementRef<HTMLSelectElement>
-  @ViewChild('selTod')          public selectTod!: ElementRef<HTMLSelectElement>
-  @ViewChild('selEtdh')         public selectEtdh!: ElementRef<HTMLSelectElement>
-  @ViewChild('selEi')           public selectEi!: ElementRef<HTMLSelectElement>
+  @ViewChild('selVinculo') public selectVinculo!: ElementRef<HTMLSelectElement>
+  @ViewChild('selEfa') public selectEfa!: ElementRef<HTMLSelectElement>
+  @ViewChild('selTod') public selectTod!: ElementRef<HTMLSelectElement>
+  @ViewChild('selEtdh') public selectEtdh!: ElementRef<HTMLSelectElement>
+  @ViewChild('selEi') public selectEi!: ElementRef<HTMLSelectElement>
 
   public myForm = this.fb.group({
     tableType: ['', [Validators.required]],
     efmControl: ['', [Validators.required]],
-    saberProControl: ['', [Validators.required]],
+    saberProControl1: ['', [Validators.required]],
+    saberProControl2: ['', [Validators.required]],
     expControl: ['', [Validators.required]],
-    expCualqControl: ['', [Validators.required]],
+    expCualqControl: ['0', []],
     vinculoControl: ['', [Validators.required]],
     efaControl: ['', [Validators.required]],
     todControl: ['', [Validators.required]],
@@ -62,9 +64,10 @@ export class CalculatorComponent {
   public saberPro1: number = 0
   public arrayExp: number[][] = [] // Array para guardar las experiencias del docente
   public exp: number = 0
-  public expCualq: number = 2 // Puntos por año
+  public expCualq: number = 0
+  public puntExpCualq: number = 2 // Puntaje por año de experiencia en cualquier nivel de educación
   public vinculo: number = 0
-  private _tieneVinculo: boolean = false
+  private _tieneVinculo: boolean = true
   public efa: number = 0
 
   /*
@@ -93,21 +96,26 @@ export class CalculatorComponent {
   public etdhOptions: SelectOptions[] = options.etdh
   public eiOptions: SelectOptions[] = options.ei
 
-  private _selectedTable?: string | null = '0' // 1 o 2
+  public selectedTable?: string | null = '0' // 1 o 2
 
 
   // Metodos
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
+
+
+  ngOnInit(): void {
+    this.resetForm()
+  }
 
 
   get selectedTableVal(): string {
-    return this._selectedTable || '0'
+    return this.selectedTable || '0'
   }
 
 
   public onSelectTable(): void {
-    this._selectedTable = this.selectTable.nativeElement.value
-    console.log(this._selectedTable)
+    this.selectedTable = this.selectTable.nativeElement.value
+    console.log(this.selectedTable)
   }
 
 
@@ -129,7 +137,6 @@ export class CalculatorComponent {
 
   public onSelectExp(): void {
     this.exp = parseInt(this.selectExp.nativeElement.value, 10)
-    console.log(this.exp)
   }
 
 
@@ -138,7 +145,7 @@ export class CalculatorComponent {
     const years: number = parseInt(this.inputTime.nativeElement.value, 10)
     const expType: number = parseInt(this.selectExp.nativeElement.value, 10)
     this.arrayExp.push([years, expType])
-    
+
     // Guardo el nombre de la zona de la experiencia seleccionada
     const index: number = this.selectExp.nativeElement.selectedIndex
     const zona: string = this.selectExp.nativeElement.options[index].text
@@ -164,14 +171,22 @@ export class CalculatorComponent {
 
 
   public onSelectExpCualq(): void {
-    this.expCualq = parseInt(this.selectExp.nativeElement.value, 10)
+    let expCualq: string = this.selectExp.nativeElement.value
+    if (expCualq === '') {
+      expCualq = '0'
+    }
+
+    this.expCualq = parseInt(expCualq, 10)
     console.log(this.expCualq)
   }
 
 
   public onSelectVinculo(): void {
     const vinculo = this.selectVinculo.nativeElement.value
-    if (vinculo != '0' && vinculo != '') {
+    if (vinculo == '0' || vinculo == '') {
+      this._tieneVinculo = false
+    }
+    else {
       this._tieneVinculo = true
     }
 
@@ -181,8 +196,127 @@ export class CalculatorComponent {
 
 
   public onSelectEfa(): void {
-    this.efa = parseInt(this.selectEfa.nativeElement.value, 10)
+    const efa = this.selectEfa.nativeElement.value
+
+    switch (this.selectedTable) {
+      case '1': // Tabla general
+        switch (efa) {
+          case 'd': (this._tieneVinculo) ? this.efa = 20 : this.efa = 15; break
+          case 'm': (this._tieneVinculo) ? this.efa = 15 : this.efa = 10; break
+          case 'e': (this._tieneVinculo) ? this.efa = 10 : this.efa = 5; break
+          default: this.efa = 0; break
+        }
+        break
+      case '2': // Tabla específica
+        switch (efa) {
+          case 'd': this.efa = 30; break
+          case 'm': this.efa = 20; break
+          case 'e': this.efa = 10; break
+          default: this.efa = 0; break
+        }
+        break
+      default: this.efa = 0; break
+    }
+
     console.log(this.efa)
+  }
+
+
+  public onSelectTod(): void {
+    this.tod = parseInt(this.selectTod.nativeElement.value, 10)
+    console.log(this.tod)
+  }
+
+
+  public onSelectSaberPro2(): void {
+    let valor: string = this.selectSaberPro2.nativeElement.value
+    if (valor === '') {
+      valor = '0'
+    }
+    this.saberPro2 = parseInt(valor, 10)
+    console.log(this.saberPro2)
+  }
+
+
+  public onSelectEtdh(): void {
+    this.etdh = parseInt(this.selectEtdh.nativeElement.value, 10)
+    console.log(this.etdh)
+  }
+
+
+  public onSelectEi(): void {
+    this.ei = parseInt(this.selectEi.nativeElement.value, 10)
+    console.log(this.ei)
+  }
+
+
+  public calcularPuntaje(): void {
+    let puntaje: number = 0
+
+    switch (this.selectedTable) {
+      case '1': // Tabla general
+
+        // Calculo valor de la experiencia docente en niveles de educación inicial, preescolar, básica y media
+        let acumExp = this.arrayExp.reduce((acumExp, expActual) => {
+          let puntos = expActual[0] * expActual[1]; // Calcula el puntaje multiplicanos años por puntos de la zona
+          return acumExp + puntos; // Suma el producto al acumulado
+        }, 0); // Inicia el acumulador en 0
+        if (acumExp > 35) acumExp = 35 // El puntaje máximo es 35
+        this.exp = acumExp
+
+        // Calculo experiencia en cualquier otro nivel de educación
+        let valExpCualq = this.inputTimeExpCualq.nativeElement.value
+        if (valExpCualq === '') valExpCualq = '0'
+        let expCualq = parseInt(valExpCualq, 10) * this.puntExpCualq
+        if (expCualq > 10) expCualq = 10 // El puntaje máximo es 10
+        this.expCualq = expCualq
+
+        puntaje = this.efm + this.saberPro1 + this.exp + this.expCualq + this.vinculo + this.efa
+        break
+      case '2': // Tabla específica
+        puntaje = this.tod + this.saberPro2 + this.efa + this.etdh + this.ei + this.vinculo
+        break
+      default: puntaje = 0; break
+    }
+
+    const results = showResults(
+      this.selectedTable!,
+      puntaje,
+      this.efm,
+      this.saberPro1,
+      this.saberPro2,
+      this.exp,
+      this.expCualq,
+      this.vinculo,
+      this.efa,
+      this.tod,
+      this.etdh,
+      this.ei,
+    )
+
+    // Mostrar resultados
+    const resultsDiv: HTMLElement = document.getElementById('resultados')!
+    resultsDiv.innerHTML = results
+  }
+
+
+  public resetForm(): void {
+    this.myForm.reset()
+    this.selectedTable = '0'
+    this.arrayExp = []
+    this.efm = 0
+    this.saberPro1 = 0
+    this.saberPro2 = 0
+    this.exp = 0
+    this.expCualq = 0
+    this.vinculo = 0
+    this.efa = 0
+    this.tod = 0
+    this.etdh = 0
+    this.ei = 0
+    // Limpiar resultados
+    const resultsDiv: HTMLElement = document.getElementById('resultados')!
+    resultsDiv.innerHTML = ''
   }
 
 }
