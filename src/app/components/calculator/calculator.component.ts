@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectOptions } from '../../interfaces/select-options.interface';
 
 import * as options from '../../data/options';
@@ -10,7 +10,7 @@ import { showResults } from '../../helpers/show-results';
   templateUrl: './calculator.component.html',
   styleUrl: './calculator.component.css',
 })
-export class CalculatorComponent implements OnInit {
+export class CalculatorComponent {
 
   // Atributos de formularios
   @ViewChild('selTable') public selectTable!: ElementRef<HTMLSelectElement>
@@ -26,12 +26,13 @@ export class CalculatorComponent implements OnInit {
   @ViewChild('selEtdh') public selectEtdh!: ElementRef<HTMLSelectElement>
   @ViewChild('selEi') public selectEi!: ElementRef<HTMLSelectElement>
 
-  public myForm = this.fb.group({
+  public myForm: FormGroup = this.fb.group({
     tableType: ['', [Validators.required]],
     efmControl: ['', [Validators.required]],
     saberProControl1: ['', [Validators.required]],
     saberProControl2: ['', [Validators.required]],
     expControl: ['', [Validators.required]],
+    expTimeControl: ['0', []],
     expCualqControl: ['0', []],
     vinculoControl: ['', [Validators.required]],
     efaControl: ['', [Validators.required]],
@@ -99,13 +100,8 @@ export class CalculatorComponent implements OnInit {
   public selectedTable?: string | null = '0' // 1 o 2
 
 
-  // Metodos
-  constructor(private fb: FormBuilder) {}
-
-
-  ngOnInit(): void {
-    this.resetForm()
-  }
+  /************ Metodos ************/
+  constructor(private fb: FormBuilder) { }
 
 
   get selectedTableVal(): string {
@@ -115,13 +111,11 @@ export class CalculatorComponent implements OnInit {
 
   public onSelectTable(): void {
     this.selectedTable = this.selectTable.nativeElement.value
-    console.log(this.selectedTable)
   }
 
 
   public onSelectEfm(): void {
     this.efm = parseInt(this.selectEfm.nativeElement.value, 10)
-    console.log(this.efm)
   }
 
 
@@ -131,7 +125,6 @@ export class CalculatorComponent implements OnInit {
       valor = '0'
     }
     this.saberPro1 = parseInt(valor, 10)
-    console.log(this.saberPro1)
   }
 
 
@@ -165,8 +158,6 @@ export class CalculatorComponent implements OnInit {
     expItem.appendChild(expSpan)
     expItem.appendChild(document.createTextNode(textExp))
     expList.appendChild(expItem)
-
-    console.log(this.arrayExp)
   }
 
 
@@ -177,7 +168,6 @@ export class CalculatorComponent implements OnInit {
     }
 
     this.expCualq = parseInt(expCualq, 10)
-    console.log(this.expCualq)
   }
 
 
@@ -191,7 +181,6 @@ export class CalculatorComponent implements OnInit {
     }
 
     this.vinculo = parseInt(vinculo, 10)
-    console.log(this.vinculo)
   }
 
 
@@ -217,14 +206,11 @@ export class CalculatorComponent implements OnInit {
         break
       default: this.efa = 0; break
     }
-
-    console.log(this.efa)
   }
 
 
   public onSelectTod(): void {
     this.tod = parseInt(this.selectTod.nativeElement.value, 10)
-    console.log(this.tod)
   }
 
 
@@ -234,19 +220,16 @@ export class CalculatorComponent implements OnInit {
       valor = '0'
     }
     this.saberPro2 = parseInt(valor, 10)
-    console.log(this.saberPro2)
   }
 
 
   public onSelectEtdh(): void {
     this.etdh = parseInt(this.selectEtdh.nativeElement.value, 10)
-    console.log(this.etdh)
   }
 
 
   public onSelectEi(): void {
     this.ei = parseInt(this.selectEi.nativeElement.value, 10)
-    console.log(this.ei)
   }
 
 
@@ -301,7 +284,6 @@ export class CalculatorComponent implements OnInit {
 
 
   public resetForm(): void {
-    this.myForm.reset()
     this.selectedTable = '0'
     this.arrayExp = []
     this.efm = 0
@@ -314,9 +296,25 @@ export class CalculatorComponent implements OnInit {
     this.tod = 0
     this.etdh = 0
     this.ei = 0
+    
     // Limpiar resultados
     const resultsDiv: HTMLElement = document.getElementById('resultados')!
     resultsDiv.innerHTML = ''
+
+    // limpiar formulario y establecer valores por defecto
+    this.myForm.reset()
+    this.myForm.controls['tableType'].setValue('')
+    this.myForm.controls['efmControl'].setValue('')
+    this.myForm.controls['saberProControl1'].setValue('')
+    this.myForm.controls['saberProControl2'].setValue('')
+    this.myForm.controls['expControl'].setValue('')
+    this.myForm.controls['expTimeControl'].setValue('0')
+    this.myForm.controls['expCualqControl'].setValue('0')
+    this.myForm.controls['vinculoControl'].setValue('')
+    this.myForm.controls['efaControl'].setValue('')
+    this.myForm.controls['todControl'].setValue('')
+    this.myForm.controls['etdhControl'].setValue('')
+    this.myForm.controls['eiControl'].setValue('')
   }
 
 }
