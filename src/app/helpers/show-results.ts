@@ -82,3 +82,12 @@ export function showResults(
 
   return result
 }
+
+
+export function doScroll(nTop: number): void {
+  window.scroll({
+    top: nTop,
+    left: 0,
+    behavior: 'smooth',
+ });
+}

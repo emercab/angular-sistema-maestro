@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectOptions } from '../../interfaces/select-options.interface';
 
 import * as options from '../../data/options';
-import { showResults } from '../../helpers/show-results';
+import { doScroll, showResults } from '../../helpers/show-results';
 
 @Component({
   selector: 'app-calculator',
@@ -111,6 +111,7 @@ export class CalculatorComponent {
 
   public onSelectTable(): void {
     this.selectedTable = this.selectTable.nativeElement.value
+    doScroll(600)
   }
 
 
@@ -144,7 +145,7 @@ export class CalculatorComponent {
     const zona: string = this.selectExp.nativeElement.options[index].text
 
     // Limpiar campos
-    this.inputTime.nativeElement.value = ''
+    this.inputTime.nativeElement.value = '0'
     this.selectExp.nativeElement.value = ''
 
     // Mostrar experiencia agregada en el formulario
@@ -280,6 +281,7 @@ export class CalculatorComponent {
     // Mostrar resultados
     const resultsDiv: HTMLElement = document.getElementById('resultados')!
     resultsDiv.innerHTML = results
+    doScroll(1200)
   }
 
 
