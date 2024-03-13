@@ -153,12 +153,45 @@ export class CalculatorComponent {
     const expList: HTMLElement = document.getElementById('expList')!
     const expItem: HTMLElement = document.createElement('li')
     const expSpan: HTMLElement = document.createElement('span')
+    const removeIcon: HTMLElement = document.createElement('i')
+
+    // Icono para eliminar la experiencia
+    removeIcon.classList.add('ri-delete-bin-2-fill')
+    // Agregrar atributo data-index al icono para poder eliminar la experiencia
+    removeIcon.setAttribute('data-index', (this.arrayExp.length - 1).toString())
+    // Estilos del icono
+    removeIcon.style.cursor = 'pointer'
+    removeIcon.style.marginLeft = '5px'
+    removeIcon.style.color = 'red'
+    // Agregar evento clic para eliminar la experiencia
+    removeIcon.addEventListener('click', (e) => {
+      const index: number = parseInt((e.target as HTMLElement).getAttribute('data-index')!, 10)
+      this.removeExperience(index)
+    })
+    
     expSpan.classList.add('text-first-color')
     expSpan.style.fontWeight = 'bold'
     expSpan.appendChild(document.createTextNode('Experiencia agregada: '))
     expItem.appendChild(expSpan)
     expItem.appendChild(document.createTextNode(textExp))
+    expItem.appendChild(removeIcon)
     expList.appendChild(expItem)
+  }
+
+
+  public removeExperience(index: number): void {
+    // Eliminar experiencia del array
+    this.arrayExp.splice(index, 1)
+
+    // Eliminar experiencia del formulario
+    const expList: HTMLElement = document.getElementById('expList')!
+    expList.removeChild(expList.childNodes[index])
+
+    // Actualizar indices de los iconos de eliminar
+    const removeIcons: NodeListOf<HTMLElement> = expList.querySelectorAll('i')
+    removeIcons.forEach((icon, i) => {
+      icon.setAttribute('data-index', i.toString())
+    })
   }
 
 

@@ -5,6 +5,7 @@
 }
 
 .text-lighten-color { color: var(--text-lighten-color) }
+.text-danger-color { color: var(--danger-color) }
 .bg-danger { background-color: var(--danger-color); }
 
 body.dark-theme {
